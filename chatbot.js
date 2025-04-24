@@ -102,20 +102,21 @@ client.on('message', async msg => {
 
         if (msg.type !== 'chat') {
             const mediaTypes = {
-                'image': 'foto', 'video': 'vídeo', 'audio': 'áudio',
-                'sticker': 'figurinha', 'document': 'documento'
+                image: { artigo: 'sua', nome: 'foto' },
+                video: { artigo: 'seu', nome: 'vídeo' },
+                audio: { artigo: 'seu', nome: 'áudio' },
+                sticker: { artigo: 'sua', nome: 'figurinha' },
+                document: { artigo: 'seu', nome: 'documento' },
+                voice: { artigo: 'sua', nome: 'mensagem de voz' },
+                ptt: { artigo: 'sua', nome: 'mensagem de voz' }
             };
-            const mediaType = mediaTypes[msg.type] || msg.type;
-            await sendTypingAndMessage(chat, `❗ *Atenção:*\n\nRecebemos seu ${mediaType}, mas nosso atendimento funciona apenas por mensagens de texto.`);
-            await enviarMenu(msg, contact.pushname);
-            return;
-        }
-
-        if (content === 'menu') {
-            userState.inMenu = true;
-            userState.awaitingFreeResponse = false;
-            userState.muteUntil = 0;
-            userStates.set(user, userState);
+        
+            const tipo = mediaTypes[msg.type] || { artigo: 'seu', nome: msg.type };
+        
+            await sendTypingAndMessage(
+                chat,
+                `❗ *Atenção:*\n\nRecebemos ${tipo.artigo} ${tipo.nome}, mas nosso atendimento funciona apenas por mensagens de texto.`
+            );
             await enviarMenu(msg, contact.pushname);
             return;
         }
