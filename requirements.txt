@@ -1,0 +1,2 @@
+whatsapp-web.js@1.23.0
+puppeteer@21.3.8
